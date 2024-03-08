@@ -11,11 +11,11 @@ Works as of 3/7
 
 ```{r}
 #Needed Packages
-#install.packages("palmerpenguins")
-#install.packages("dplyr")
-#install.packages("dbplyr")
-#install.packages("ggplot2")
-#install.packages("DBI")
+install.packages("palmerpenguins")
+install.packages("dplyr")
+install.packages("dbplyr")
+install.packages("ggplot2")
+install.packages("DBI")
 
 con <- DBI::dbConnect(duckdb::duckdb(), dbdir = "my-db.duckdb")
 DBI::dbWriteTable(con, "penguins", palmerpenguins::penguins)
