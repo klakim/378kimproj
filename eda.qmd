@@ -16,6 +16,8 @@ install.packages("dplyr")
 install.packages("dbplyr")
 install.packages("ggplot2")
 install.packages("DBI")
+install.packages("duckdb")
+
 
 con <- DBI::dbConnect(duckdb::duckdb(), dbdir = "my-db.duckdb")
 DBI::dbWriteTable(con, "penguins", palmerpenguins::penguins)
