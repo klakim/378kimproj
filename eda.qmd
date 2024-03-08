@@ -1,0 +1,113 @@
+---
+title: "eda.qmd"
+format: html
+---
+
+## Quarto
+
+Works as of 3/7
+
+## Penguin Size and Mass by Sex and Species
+
+```{r}
+#Needed Packages
+#install.packages("palmerpenguins")
+#install.packages("dplyr")
+#install.packages("dbplyr")
+#install.packages("ggplot2")
+#install.packages("DBI")
+
+con <- DBI::dbConnect(duckdb::duckdb(), dbdir = "my-db.duckdb")
+DBI::dbWriteTable(con, "penguins", palmerpenguins::penguins)
+DBI::dbDisconnect(con)
+```
+
+```{r}
+#Load packages 
+library(palmerpenguins)
+library(dplyr)
+library(dbplyr)
+library(ggplot2)
+library(duckdb)
+library(DBI)
+
+#load data 
+con <- DBI::dbConnect(
+  duckdb::duckdb(), 
+  dbdir = "my-db.duckdb"
+  )
+df <- dplyr::tbl(con, "penguins")
+```
+
+```{r}
+#From Chapter 1
+df %>%
+  group_by(species, sex) %>%
+  summarise(
+    across(
+        ends_with("mm") | ends_with("g"),
+      \(x) mean(x, na.rm = TRUE)
+      )
+    ) %>%
+  dplyr::collect() %>%
+  knitr::kable()
+```
+
+```{r}
+#Given EDA
+df %>%
+  ggplot(aes(x = bill_length_mm, y = body_mass_g, color = species)) +
+  geom_point() + 
+  geom_smooth(method = "lm")
+```
+
+## Penguin Bill Length by Sex and Species
+
+```{r}
+# Boxplot for comparison 
+df%>%
+  #formula 
+  ggplot(aes(x=species, y = bill_length_mm, fill = species))+ 
+  #creation
+  geom_boxplot() + 
+  theme_minimal() +
+  labs(title = "Comparison of Bill Length by Species ", x = "Species", y = "Bill Length (mm)")
+
+```
+
+```{r}
+# Boxplot for comparison 
+df%>%
+  #formula 
+  ggplot(aes(x=sex, y = bill_length_mm, fill = species))+ 
+  #creation
+  geom_boxplot() + 
+  theme_minimal() +
+  labs(title = "Comparison of Bill Length by Sex ", x = "Sex", y = "Bill Length (mm)")
+```
+
+## Penguin Bill Length by Interaction of Sex and Species
+
+```         
+```
+
+```{r}
+df %>%
+  ggplot(aes(x = interaction(species, sex), y = bill_length_mm, fill = species)) + 
+  geom_boxplot() + 
+  theme_minimal() +
+  labs(
+    title = "Comparison of Bill Length by Sex and Species",
+    x = "Species and Sex",
+    y = "Bill Length (mm)",
+    fill = "Species"
+  )
+
+```
+
+```{}
+```
+
+```{r}
+DBI::dbDisconnect(con)
+```
