@@ -1,8 +1,4 @@
-name: Publish Quarto Project
-  uses: quarto-dev/quarto-actions/publish@v2
-  with:
-    # other settings
-  working-directory: finalproj/finalproj.Rproj
+name: Quarto Publish
 
 on:
   workflow_dispatch:
