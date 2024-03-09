@@ -16,18 +16,11 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v2
         
-      - name: Fix containerd conflicts
-        run: |
-        sudo apt-get remove -y containerd
-        sudo apt-get update
-        sudo apt-get install -y containerd.io
-
-
       - name: Set up Docker
         run: |
           sudo apt-get update
           sudo apt-get install -y docker.io
-        # Ensures Docker is installed on the runner
+          sudo systemctl start docker
 
       - name: Build Docker image
         run: docker build . --file Dockerfile --tag your-fastapi-app:latest
