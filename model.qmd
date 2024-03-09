@@ -110,7 +110,7 @@ endpoint
 ```{python}
 import pandas as pd
 
-# Correct the dictionary format and structure for DataFrame creation
+# Your existing dictionary
 new_penguin_dict = {
     "bill_length_mm": [120],  # Enclosed the values in lists
     "sex_male": [1],          # Assuming '1' for male based on your previous messages
@@ -118,9 +118,12 @@ new_penguin_dict = {
     "species_Chinstrap": [0]
 }
 
-
 # Convert the dictionary to a DataFrame
-record_dict = new_penguin_dict.iloc[0].to_dict()
+new_penguin_df = pd.DataFrame(new_penguin_dict)
+
+# Now, convert the first row of the DataFrame to a dictionary
+record_dict = new_penguin_df.iloc[0].to_dict()
+
 
 import requests  # Ensure this is installed: pip install requests
 
