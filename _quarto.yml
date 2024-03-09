@@ -5,10 +5,6 @@ website:
   navbar:
     background: primary
     left:
-      - href: index.qmd
-        text: Home
-      - href: about.qmd
-        text: About
       - href: eda.qmd
         text: EDA
       - href: model.qmd
