@@ -1,0 +1,93 @@
+[
+  {
+    "objectID": "model.html",
+    "href": "model.html",
+    "title": "model",
+    "section": "",
+    "text": "from palmerpenguins import penguins\nfrom pandas import get_dummies\nimport numpy as np\nfrom sklearn.linear_model import LinearRegression\nfrom sklearn import preprocessing\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score"
+  },
+  {
+    "objectID": "model.html#get-data-fixed-37",
+    "href": "model.html#get-data-fixed-37",
+    "title": "model",
+    "section": "Get Data fixed 3/7",
+    "text": "Get Data fixed 3/7\n\ndf = penguins.load_penguins().dropna()\n\ndf.head(3)\n\n\n\n\n\n\n\n\n\nspecies\nisland\nbill_length_mm\nbill_depth_mm\nflipper_length_mm\nbody_mass_g\nsex\nyear\n\n\n\n\n0\nAdelie\nTorgersen\n39.1\n18.7\n181.0\n3750.0\nmale\n2007\n\n\n1\nAdelie\nTorgersen\n39.5\n17.4\n186.0\n3800.0\nfemale\n2007\n\n\n2\nAdelie\nTorgersen\n40.3\n18.0\n195.0\n3250.0\nfemale\n2007"
+  },
+  {
+    "objectID": "model.html#define-model-and-fit",
+    "href": "model.html#define-model-and-fit",
+    "title": "model",
+    "section": "Define Model and Fit",
+    "text": "Define Model and Fit\n\nX = get_dummies(df[['bill_length_mm', 'species', 'sex']], drop_first = True)\ny = df['body_mass_g']\n\n#context for building the api\nprint(X)\nmodel = LinearRegression().fit(X, y)\n\n     bill_length_mm  species_Chinstrap  species_Gentoo  sex_male\n0              39.1              False           False      True\n1              39.5              False           False     False\n2              40.3              False           False     False\n4              36.7              False           False     False\n5              39.3              False           False      True\n..              ...                ...             ...       ...\n339            55.8               True           False      True\n340            43.5               True           False     False\n341            49.6               True           False      True\n342            50.8               True           False      True\n343            50.2               True           False     False\n\n[333 rows x 4 columns]"
+  },
+  {
+    "objectID": "model.html#get-some-information",
+    "href": "model.html#get-some-information",
+    "title": "model",
+    "section": "Get some information",
+    "text": "Get some information\n\nprint(f\"R^2 {model.score(X,y)}\")\nprint(f\"Intercept {model.intercept_}\")\nprint(f\"Columns {X.columns}\")\nprint(f\"Coefficients {model.coef_}\")\n\nR^2 0.8555368759537614\nIntercept 2169.2697209393996\nColumns Index(['bill_length_mm', 'species_Chinstrap', 'species_Gentoo', 'sex_male'], dtype='object')\nCoefficients [  32.53688677 -298.76553447 1094.86739145  547.36692408]"
+  },
+  {
+    "objectID": "model.html#attempt-at-model-validation",
+    "href": "model.html#attempt-at-model-validation",
+    "title": "model",
+    "section": "Attempt at Model Validation",
+    "text": "Attempt at Model Validation\n\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)  # 80% training and 20% testing\n\nmodel = LinearRegression().fit(X_train, y_train)\n#Asked Chat GPT on what statistics to run on \ny_pred = model.predict(X_test)\nmse = mean_squared_error(y_test, y_pred)\nmae = mean_absolute_error(y_test, y_pred)\nr2 = r2_score(y_test, y_pred)\n\nprint(f'Mean Squared Error (MSE): {mse}')\nprint(f'Mean Absolute Error (MAE): {mae}')\nprint(f'R-squared (R²): {r2}')\n\nMean Squared Error (MSE): 96276.55445316953\nMean Absolute Error (MAE): 247.01332715906779\nR-squared (R²): 0.838967354416846"
+  },
+  {
+    "objectID": "model.html#chapter-2",
+    "href": "model.html#chapter-2",
+    "title": "model",
+    "section": "Chapter 2",
+    "text": "Chapter 2\n\nfrom joblib import dump\n\nfrom vetiver import VetiverModel\nv = VetiverModel(model, model_name='penguin_model', prototype_data=X)\n\n# Assuming 'model' is your trained LinearRegression model\ndump(model, 'penguin_model.pkl')\n\n['penguin_model.pkl']\n\n\n\nimport duckdb\nfrom palmerpenguins import penguins\n\ncon = duckdb.connect('my-db.duckdb')\ndf = con.execute(\"SELECT * FROM penguins\").fetchdf().dropna()\ncon.close()\n\nDocumentation Statement: I used the following resource : https://www.geeksforgeeks.org/how-to-do-train-test-split-using-sklearn-in-python/"
+  },
+  {
+    "objectID": "finalproj.html",
+    "href": "finalproj.html",
+    "title": "finalproj",
+    "section": "",
+    "text": "Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see https://quarto.org.\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "finalproj.html#quarto",
+    "href": "finalproj.html#quarto",
+    "title": "finalproj",
+    "section": "",
+    "text": "Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see https://quarto.org.\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "eda.html",
+    "href": "eda.html",
+    "title": "eda.qmd",
+    "section": "",
+    "text": "Works as of 3/7"
+  },
+  {
+    "objectID": "eda.html#quarto",
+    "href": "eda.html#quarto",
+    "title": "eda.qmd",
+    "section": "",
+    "text": "Works as of 3/7"
+  },
+  {
+    "objectID": "eda.html#penguin-size-and-mass-by-sex-and-species",
+    "href": "eda.html#penguin-size-and-mass-by-sex-and-species",
+    "title": "eda.qmd",
+    "section": "Penguin Size and Mass by Sex and Species",
+    "text": "Penguin Size and Mass by Sex and Species\n\n#Needed Packages\ninstall.packages(\"palmerpenguins\")\n\nThe following package(s) will be installed:\n- palmerpenguins [0.1.1]\nThese packages will be installed into \"~/work/378kimproj/378kimproj/renv/library/R-4.2/x86_64-pc-linux-gnu\".\n\n# Installing packages --------------------------------------------------------\n- Installing palmerpenguins ...                 OK [linked from cache]\nSuccessfully installed 1 package in 5.4 milliseconds.\n\ninstall.packages(\"dplyr\")\n\nThe following package(s) will be installed:\n- dplyr [1.1.4]\nThese packages will be installed into \"~/work/378kimproj/378kimproj/renv/library/R-4.2/x86_64-pc-linux-gnu\".\n\n# Installing packages --------------------------------------------------------\n- Installing dplyr ...                          OK [linked from cache]\nSuccessfully installed 1 package in 3.7 milliseconds.\n\ninstall.packages(\"dbplyr\")\n\n# Downloading packages -------------------------------------------------------\n- Downloading dbplyr from CRAN ...              OK [1.1 Mb in 0.35s]\n- Downloading blob from CRAN ...                OK [44.8 Kb in 0.43s]\n- Downloading DBI from CRAN ...                 OK [852.6 Kb in 0.52s]\n- Downloading purrr from CRAN ...               OK [473.8 Kb in 0.16s]\n- Downloading tidyr from CRAN ...               OK [1.1 Mb in 0.21s]\n- Downloading cpp11 from CRAN ...               OK [273.6 Kb in 0.15s]\nSuccessfully downloaded 6 packages in 2.6 seconds.\n\nThe following package(s) will be installed:\n- blob   [1.2.4]\n- cpp11  [0.4.7]\n- DBI    [1.2.2]\n- dbplyr [2.4.0]\n- purrr  [1.0.2]\n- tidyr  [1.3.1]\nThese packages will be installed into \"~/work/378kimproj/378kimproj/renv/library/R-4.2/x86_64-pc-linux-gnu\".\n\n# Installing packages --------------------------------------------------------\n- Installing blob ...                           OK [installed binary and cached in 0.54s]\n- Installing DBI ...                            OK [installed binary and cached in 0.52s]\n- Installing purrr ...                          OK [installed binary and cached in 0.55s]\n- Installing cpp11 ...                          OK [installed binary and cached in 0.43s]\n- Installing tidyr ...                          OK [installed binary and cached in 0.77s]\n- Installing dbplyr ...                         OK [installed binary and cached in 1.0s]\nSuccessfully installed 6 packages in 4 seconds.\n\ninstall.packages(\"ggplot2\")\n\nThe following package(s) will be installed:\n- ggplot2 [3.5.0]\nThese packages will be installed into \"~/work/378kimproj/378kimproj/renv/library/R-4.2/x86_64-pc-linux-gnu\".\n\n# Installing packages --------------------------------------------------------\n- Installing ggplot2 ...                        OK [linked from cache]\nSuccessfully installed 1 package in 3.8 milliseconds.\n\ninstall.packages(\"DBI\")\n\nThe following package(s) will be installed:\n- DBI [1.2.2]\nThese packages will be installed into \"~/work/378kimproj/378kimproj/renv/library/R-4.2/x86_64-pc-linux-gnu\".\n\n# Installing packages --------------------------------------------------------\n- Installing DBI ...                            OK [linked from cache]\nSuccessfully installed 1 package in 3.6 milliseconds.\n\ninstall.packages(\"duckdb\")\n\n# Downloading packages -------------------------------------------------------\n- Downloading duckdb from CRAN ...              OK [9.4 Mb in 0.82s]\nSuccessfully downloaded 1 package in 1.2 seconds.\n\nThe following package(s) will be installed:\n- duckdb [0.9.2-1]\nThese packages will be installed into \"~/work/378kimproj/378kimproj/renv/library/R-4.2/x86_64-pc-linux-gnu\".\n\n# Installing packages --------------------------------------------------------\n- Installing duckdb ...                         OK [installed binary and cached in 1.3s]\nSuccessfully installed 1 package in 1.5 seconds.\n\ncon &lt;- DBI::dbConnect(duckdb::duckdb(), dbdir = \"my-db.duckdb\")\nDBI::dbWriteTable(con, \"penguins\", palmerpenguins::penguins, overwrite = TRUE)\n\n\n#Load packages \nlibrary(palmerpenguins)\nlibrary(dplyr)\n\n\nAttaching package: 'dplyr'\n\n\nThe following objects are masked from 'package:stats':\n\n    filter, lag\n\n\nThe following objects are masked from 'package:base':\n\n    intersect, setdiff, setequal, union\n\nlibrary(dbplyr)\n\n\nAttaching package: 'dbplyr'\n\n\nThe following objects are masked from 'package:dplyr':\n\n    ident, sql\n\nlibrary(ggplot2)\nlibrary(duckdb)\n\nLoading required package: DBI\n\nlibrary(DBI)\n\n#load data \ncon &lt;- DBI::dbConnect(\n  duckdb::duckdb(), \n  dbdir = \"my-db.duckdb\"\n  )\ndf &lt;- dplyr::tbl(con, \"penguins\")\n\n\n#From Chapter 1\ndf %&gt;%\n  group_by(species, sex) %&gt;%\n  summarise(\n    across(\n        ends_with(\"mm\") | ends_with(\"g\"),\n      \\(x) mean(x, na.rm = TRUE)\n      )\n    ) %&gt;%\n  dplyr::collect() %&gt;%\n  knitr::kable()\n\n`summarise()` has grouped output by \"species\". You can override using the\n`.groups` argument.\n\n\n\n\n\n\n\n\n\n\n\n\n\nspecies\nsex\nbill_length_mm\nbill_depth_mm\nflipper_length_mm\nbody_mass_g\n\n\n\n\nAdelie\nNA\n37.84000\n18.32000\n185.6000\n3540.000\n\n\nAdelie\nfemale\n37.25753\n17.62192\n187.7945\n3368.836\n\n\nAdelie\nmale\n40.39041\n19.07260\n192.4110\n4043.493\n\n\nChinstrap\nfemale\n46.57353\n17.58824\n191.7353\n3527.206\n\n\nChinstrap\nmale\n51.09412\n19.25294\n199.9118\n3938.971\n\n\nGentoo\nNA\n45.62500\n14.55000\n215.7500\n4587.500\n\n\nGentoo\nfemale\n45.56379\n14.23793\n212.7069\n4679.741\n\n\nGentoo\nmale\n49.47377\n15.71803\n221.5410\n5484.836\n\n\n\n\n\n\n#Given EDA\ndf %&gt;%\n  ggplot(aes(x = bill_length_mm, y = body_mass_g, color = species)) +\n  geom_point() + \n  geom_smooth(method = \"lm\")\n\n`geom_smooth()` using formula = 'y ~ x'\n\n\nWarning: Removed 2 rows containing non-finite outside the scale range\n(`stat_smooth()`).\n\n\nWarning: Removed 2 rows containing missing values or values outside the scale range\n(`geom_point()`)."
+  },
+  {
+    "objectID": "eda.html#penguin-bill-length-by-sex-and-species",
+    "href": "eda.html#penguin-bill-length-by-sex-and-species",
+    "title": "eda.qmd",
+    "section": "Penguin Bill Length by Sex and Species",
+    "text": "Penguin Bill Length by Sex and Species\n\n# Boxplot for comparison \ndf%&gt;%\n  #formula \n  ggplot(aes(x=species, y = bill_length_mm, fill = species))+ \n  #creation\n  geom_boxplot() + \n  theme_minimal() +\n  labs(title = \"Comparison of Bill Length by Species \", x = \"Species\", y = \"Bill Length (mm)\")\n\nWarning: Removed 2 rows containing non-finite outside the scale range\n(`stat_boxplot()`).\n\n\n\n\n\n\n\n\n\n\n# Boxplot for comparison \ndf%&gt;%\n  #formula \n  ggplot(aes(x=sex, y = bill_length_mm, fill = species))+ \n  #creation\n  geom_boxplot() + \n  theme_minimal() +\n  labs(title = \"Comparison of Bill Length by Sex \", x = \"Sex\", y = \"Bill Length (mm)\")\n\nWarning: Removed 2 rows containing non-finite outside the scale range\n(`stat_boxplot()`)."
+  },
+  {
+    "objectID": "eda.html#penguin-bill-length-by-interaction-of-sex-and-species",
+    "href": "eda.html#penguin-bill-length-by-interaction-of-sex-and-species",
+    "title": "eda.qmd",
+    "section": "Penguin Bill Length by Interaction of Sex and Species",
+    "text": "Penguin Bill Length by Interaction of Sex and Species\n\n\ndf %&gt;%\n  ggplot(aes(x = interaction(species, sex), y = bill_length_mm, fill = species)) + \n  geom_boxplot() + \n  theme_minimal() +\n  labs(\n    title = \"Comparison of Bill Length by Sex and Species\",\n    x = \"Species and Sex\",\n    y = \"Bill Length (mm)\",\n    fill = \"Species\"\n  )\n\nWarning: Removed 2 rows containing non-finite outside the scale range\n(`stat_boxplot()`).\n\n\n\n\n\n\n\n\n\n\n\nDBI::dbDisconnect(con, shutdown = TRUE)"
+  }
+]
