@@ -20,8 +20,7 @@ install.packages("duckdb")
 
 
 con <- DBI::dbConnect(duckdb::duckdb(), dbdir = "my-db.duckdb")
-DBI::dbWriteTable(con, "penguins", palmerpenguins::penguins)
-DBI::dbDisconnect(con)
+DBI::dbWriteTable(con, "penguins", palmerpenguins::penguins, overwrite = TRUE)
 ```
 
 ```{r}
@@ -111,5 +110,5 @@ df %>%
 ```
 
 ```{r}
-DBI::dbDisconnect(con)
+DBI::dbDisconnect(con, shutdown = TRUE)
 ```
