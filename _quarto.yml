@@ -1,5 +1,5 @@
-website:
-  navbar:
+project:
+  type: website
     background: primary
     left:
       - href: index.qmd
