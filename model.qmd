@@ -32,6 +32,9 @@ print(X)
 model = LinearRegression().fit(X, y)
 ```
 
+
+
+
 ## Get some information
 
 ```{python}
@@ -62,13 +65,75 @@ print(f'R-squared (R²): {r2}')
 
 ```{python}
 from joblib import dump
-
-from vetiver import VetiverModel
-v = VetiverModel(model, model_name='penguin_model', prototype_data=X)
-
-# Assuming 'model' is your trained LinearRegression model
 dump(model, 'penguin_model.pkl')
 ```
+
+
+```{python}
+from vetiver import VetiverModel
+
+v = VetiverModel(model=model, model_name='penguin_model', prototype_data=X)
+```
+
+
+```{python}
+from pins import board_folder
+from vetiver import vetiver_pin_write
+
+# Initialize board folder
+model_board = board_folder("finalproj/pins-py", allow_pickle_read=True)
+
+# Write the Vetiver model to the board
+vetiver_pin_write(model_board, v)
+
+
+```
+
+
+
+```{python}
+from vetiver import VetiverAPI
+app = VetiverAPI(v, check_prototype=True)
+```
+
+```{python}
+#vetiver.prepare_docker(model_board, "penguin_model")
+```
+
+```{python}
+from vetiver.server import predict, vetiver_endpoint
+endpoint = vetiver_endpoint("http://127.0.0.1:8080/predict")
+endpoint
+```
+
+
+```{python}
+import pandas as pd
+
+# Correct the dictionary format and structure for DataFrame creation
+new_penguin_dict = {
+    "bill_length_mm": [120],  # Enclosed the values in lists
+    "sex_male": [1],          # Assuming '1' for male based on your previous messages
+    "species_Gentoo": [1],
+    "species_Chinstrap": [0]
+}
+
+
+# Convert the dictionary to a DataFrame
+record_dict = new_penguin_dict.iloc[0].to_dict()
+
+import requests  # Ensure this is installed: pip install requests
+
+# Assuming 'endpoint' is your API endpoint URL
+response = requests.post(endpoint, json=record_dict)
+
+# Check the response
+if response.ok:
+    print("Success:", response.json())
+else:
+    print("Error:", response.status_code, response.text)
+```
+
 
 ```{python}
 import duckdb

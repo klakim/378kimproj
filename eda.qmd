@@ -18,7 +18,6 @@ install.packages("ggplot2")
 install.packages("DBI")
 install.packages("duckdb")
 
-
 con <- DBI::dbConnect(duckdb::duckdb(), dbdir = "my-db.duckdb")
 DBI::dbWriteTable(con, "penguins", palmerpenguins::penguins, overwrite = TRUE)
 ```
@@ -31,6 +30,9 @@ library(dbplyr)
 library(ggplot2)
 library(duckdb)
 library(DBI)
+library(vetiver)
+library(pins)
+
 
 #load data 
 con <- DBI::dbConnect(
