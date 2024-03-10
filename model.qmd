@@ -105,10 +105,10 @@ app = VetiverAPI(v, check_prototype=True)
 
 # Your existing dictionary
 #new_penguin_dict = {
-    "bill_length_mm": [120],  # Enclosed the values in lists
-    "sex_male": [1],          # Assuming '1' for male based on your previous messages
-    "species_Gentoo": [1],
-    "species_Chinstrap": [0]
+    #"bill_length_mm": [120],  # Enclosed the values in lists
+    #"sex_male": [1],          # Assuming '1' for male based on your previous messages
+   # "species_Gentoo": [1],
+    #"species_Chinstrap": [0]
 #}
 
 # Convert the dictionary to a DataFrame
