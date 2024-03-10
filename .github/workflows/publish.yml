@@ -16,12 +16,12 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v2
         
-      - name: Resolve Docker package conflicts
+      - name: Install Docker using official Docker script
         run: |
-          sudo apt-get update
-          sudo apt-get remove -y containerd || true  # Ignore errors if not installed
-          sudo apt-get install -y containerd.io
-          sudo apt-get install -y docker.io
+          curl -fsSL https://get.docker.com -o get-docker.sh
+          sudo sh get-docker.sh
+          sudo usermod -aG docker $USER
+          newgrp docker 
 
       - name: Build Docker image
         run: docker build . --file Dockerfile --tag your-fastapi-app:latest
