@@ -16,9 +16,13 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v2
         
+      - name: Resolve package conflicts
+        run: |
+          sudo apt-get remove -y containerd || true  # Remove if installed, ignore errors if not installed
+          sudo apt-get update
+
       - name: Set up Docker
         run: |
-          sudo apt-get update
           sudo apt-get install -y docker.io
           sudo systemctl start docker
 
@@ -27,7 +31,7 @@ jobs:
 
       - name: Run Docker container
         run: docker run -d -p 8000:8000 your-fastapi-app:latest
-        # Adjust port and tag as needed
+        # Make sure to adjust the port and tag as needed
 
       - name: Install R
         uses: r-lib/actions/setup-r@v2
