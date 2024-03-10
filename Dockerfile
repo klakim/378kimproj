@@ -9,8 +9,6 @@ COPY . /app
 # Update pip and install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir --upgrade -r requirements.txt
-    
-RUN sed -i 's/deb.debian.org/mirror.switch.ch/g' /etc/apt/sources.list
 
 # Install dependencies for Quarto
 RUN apt-get update && \
