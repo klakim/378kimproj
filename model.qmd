@@ -100,46 +100,46 @@ app = VetiverAPI(v, check_prototype=True)
 ```
 
 ```{python}
-if(FALSE) {
-  import pandas as pd
+
+ # import pandas as pd
 
 # Your existing dictionary
-new_penguin_dict = {
+#new_penguin_dict = {
     "bill_length_mm": [120],  # Enclosed the values in lists
     "sex_male": [1],          # Assuming '1' for male based on your previous messages
     "species_Gentoo": [1],
     "species_Chinstrap": [0]
-}
+#}
 
 # Convert the dictionary to a DataFrame
-new_penguin_df = pd.DataFrame(new_penguin_dict)
+#new_penguin_df = pd.DataFrame(new_penguin_dict)
 
 # Now, convert the first row of the DataFrame to a dictionary
-record_dict = new_penguin_df.iloc[0].to_dict()
+#record_dict = new_penguin_df.iloc[0].to_dict()
 
 
-import requests  # Ensure this is installed: pip install requests
+#import requests  # Ensure this is installed: pip install requests
 
 # Assuming 'endpoint' is your API endpoint URL
-response = requests.post(endpoint, json=record_dict)
+#response = requests.post(endpoint, json=record_dict)
 
 # Check the response
-if response.ok:
-    print("Success:", response.json())
-else:
-    print("Error:", response.status_code, response.text)
-    }
+#if response.ok:
+#    print("Success:", response.json())
+#else:
+#    print("Error:", response.status_code, response.text)
+    
 ```
 
 ```{python}
-if(FALSE) {
-  import duckdb
-from palmerpenguins import penguins
+#if(FALSE) {
+ # import duckdb
+#from palmerpenguins import penguins
 
-con = duckdb.connect('my-db.duckdb')
-df = con.execute("SELECT * FROM penguins").fetchdf().dropna()
-con.close()
-}
+#con = duckdb.connect('my-db.duckdb')
+#df = con.execute("SELECT * FROM penguins").fetchdf().dropna()
+#con.close()
+#}
 ```
 
 Documentation Statement: I used the following resource : <https://www.geeksforgeeks.org/how-to-do-train-test-split-using-sklearn-in-python/>
