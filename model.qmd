@@ -32,9 +32,6 @@ print(X)
 model = LinearRegression().fit(X, y)
 ```
 
-
-
-
 ## Get some information
 
 ```{python}
@@ -68,13 +65,11 @@ from joblib import dump
 dump(model, 'penguin_model.pkl')
 ```
 
-
 ```{python}
 from vetiver import VetiverModel
 
 v = VetiverModel(model=model, model_name='penguin_model', prototype_data=X)
 ```
-
 
 ```{python}
 from pins import board_folder
@@ -89,8 +84,6 @@ vetiver_pin_write(model_board, v)
 
 ```
 
-
-
 ```{python}
 from vetiver import VetiverAPI
 app = VetiverAPI(v, check_prototype=True)
@@ -101,14 +94,14 @@ app = VetiverAPI(v, check_prototype=True)
 ```
 
 ```{python}
-from vetiver.server import predict, vetiver_endpoint
-endpoint = vetiver_endpoint("http://127.0.0.1:8080/predict")
-endpoint
+#from vetiver.server import predict, vetiver_endpoint
+#endpoint = vetiver_endpoint("http://127.0.0.1:8080/predict")
+#endpoint
 ```
 
-
 ```{python}
-import pandas as pd
+if(FALSE) {
+  import pandas as pd
 
 # Your existing dictionary
 new_penguin_dict = {
@@ -135,16 +128,18 @@ if response.ok:
     print("Success:", response.json())
 else:
     print("Error:", response.status_code, response.text)
+    }
 ```
 
-
 ```{python}
-import duckdb
+if(FALSE) {
+  import duckdb
 from palmerpenguins import penguins
 
 con = duckdb.connect('my-db.duckdb')
 df = con.execute("SELECT * FROM penguins").fetchdf().dropna()
 con.close()
+}
 ```
 
 Documentation Statement: I used the following resource : <https://www.geeksforgeeks.org/how-to-do-train-test-split-using-sklearn-in-python/>
