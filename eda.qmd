@@ -22,6 +22,7 @@ install.packages("rpart.plot")
 install.packages("vip")
 install.packages("randomForest")
 install.packages("tidymodels")
+install.packages("xgboost")
 
 
 con <- DBI::dbConnect(duckdb::duckdb(), dbdir = "my-db.duckdb")
