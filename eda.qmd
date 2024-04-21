@@ -21,6 +21,7 @@ install.packages("ISLR2")
 install.packages("rpart.plot")
 install.packages("vip")
 install.packages("randomForest")
+install.packages("tidymodels")
 
 
 con <- DBI::dbConnect(duckdb::duckdb(), dbdir = "my-db.duckdb")
