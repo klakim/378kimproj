@@ -5,8 +5,6 @@ format: html
 
 ## Quarto
 
-Works as of 3/7
-
 ## Penguin Size and Mass by Sex and Species
 
 ```{r}
@@ -18,6 +16,11 @@ install.packages("ggplot2")
 install.packages("DBI")
 install.packages("duckdb")
 install.packages("vetiver")
+install.packages("tidyverse")
+install.packages("ISLR2")
+install.packages("rpart.plot")
+install.packages("vip")
+install.packages("randomForest")
 
 
 con <- DBI::dbConnect(duckdb::duckdb(), dbdir = "my-db.duckdb")
@@ -34,6 +37,14 @@ library(duckdb)
 library(DBI)
 library(vetiver)
 library(pins)
+library(tidyverse)
+library(tidymodels)
+library(ISLR2)
+library(rpart.plot)
+library(vip)
+library(xgboost)
+library(randomForest)
+
 
 
 #load data 
@@ -93,9 +104,6 @@ df%>%
 
 ## Penguin Bill Length by Interaction of Sex and Species
 
-```         
-```
-
 ```{r}
 df %>%
   ggplot(aes(x = interaction(species, sex), y = bill_length_mm, fill = species)) + 
@@ -111,6 +119,136 @@ df %>%
 ```
 
 ```         
+Random Forest for Classification by Species
+```
+
+```{r}
+head(penguins)
+```
+
+```{r}
+#Random forest for classification for species
+tree_spec <- decision_tree() %>%   
+  set_engine("rpart")
+class_tree_spec <- decision_tree() %>%      
+  set_engine("rpart") %>%      
+  set_mode("classification")
+
+class_tree_fit <- class_tree_spec %>%    
+  fit(species ~ ., data = penguins)
+
+
+class_tree_fit %>%
+  extract_fit_engine() %>%
+  rpart.plot()
+
+augment(class_tree_fit, new_data = penguins) %>%
+  accuracy(truth = species, estimate =.pred_class)
+```
+
+---
+#From this, the overall accuracy is 96.5% which is pretty good. Let's try to see if there is any change when using a valdiation split. 
+---
+
+```{r}
+set.seed(1234)
+Penguin_split <- initial_split(penguins)
+
+```
+
+```{r}
+#Train and test
+Penguin_train <- training(Penguin_split)
+Penguin_test <- testing(Penguin_split)
+```
+
+```{r}
+#Fit on just the training data set
+class_tree_fit <- class_tree_spec %>%    
+  fit(species ~ ., data = Penguin_train)   
+
+class_tree_fit
+```
+
+```{r}
+augment(class_tree_fit, new_data = Penguin_train) %>%
+  conf_mat(truth = species, estimate = .pred_class)
+```
+
+```{r}
+augment(class_tree_fit, new_data = Penguin_train) %>%
+  accuracy(truth = species, estimate = .pred_class)
+```
+
+```{r}
+augment(class_tree_fit, new_data = Penguin_test) %>%
+  conf_mat(truth = species, estimate = .pred_class)
+
+```
+
+```{r}
+augment(class_tree_fit, new_data = Penguin_test) %>%
+  accuracy(truth = species, estimate = .pred_class)
+```
+
+```{r}
+#The testing data doesn't perform as well and we get a lower accuracy by around 4%. Let's try to use the cost_complexity option to see if there is a better tree size that will reduce the overfitting that is happening. 
+class_tree_wf <- workflow() %>%
+  add_model(class_tree_spec %>% set_args(cost_complexity = tune())) %>%
+  add_formula(species ~ .)
+```
+
+```{r}
+#With this, we need to use k-fold cross validation and a grid of values 
+set.seed(1234)
+Penguin_vfold <- vfold_cv(Penguin_train, v = 10, strata = species)
+param_grid <- grid_regular(cost_complexity(range = c(-3, -1)), levels = 10)
+```
+
+```{r}
+#Fitting the model
+#| cache: true 
+tune_res <- tune_grid(
+  class_tree_wf, 
+  resamples = Penguin_vfold, 
+  grid = param_grid, 
+  metrics = metric_set(accuracy)
+)
+```
+
+```{r}
+#Which cost-complexity results in the highest accuracy 
+#| warning: false 
+autoplot(tune_res)
+best_complexity <- select_best(tune_res)
+```
+
+```{r}
+#Update the cost_complexity and on the full training set 
+#| warning: false 
+class_tree_final <- finalize_workflow(class_tree_wf, best_complexity)
+class_tree_final_fit <- fit(class_tree_final, data = Penguin_train)
+class_tree_final_fit
+```
+
+```{r}
+#Final pruned tree 
+class_tree_final_fit %>%      
+  extract_fit_engine() %>%      
+  rpart.plot()
+```
+
+```{r}
+#Best Accuracy 
+augment(class_tree_fit, new_data = Penguin_train) %>%
+  accuracy(truth = species, estimate = .pred_class)
+```
+
+```{r}
+#The output of this is the pruned tree
+class_tree_final_fit %>%      
+  extract_fit_engine() %>%      
+  rpart.plot()
 ```
 
 ```{r}

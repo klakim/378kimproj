@@ -85,18 +85,56 @@ vetiver_pin_write(model_board, v)
 ```
 
 ```{python}
+#Script from chatGPT on how to move contents in one folder to another
+
+import os
+import shutil
+
+def copy_directory_contents(src_dir, dest_dir):
+    # Check if source directory exists
+    if not os.path.exists(src_dir):
+        print(f"Source directory {src_dir} does not exist.")
+        return
+
+    # Check if destination directory exists; if not, create it
+    if not os.path.exists(dest_dir):
+        os.makedirs(dest_dir)
+
+    # List all files and directories in the source directory
+    for item in os.listdir(src_dir):
+        src_path = os.path.join(src_dir, item)
+        dest_path = os.path.join(dest_dir, item)
+
+        # Check whether the current item is a directory or a file
+        if os.path.isdir(src_path):
+            # Recursively copy a directory
+            shutil.copytree(src_path, dest_path, dirs_exist_ok=True)
+        else:
+            # Copy a single file
+            shutil.copy2(src_path, dest_path)
+
+# Specify your source and destination paths
+source_directory = 'pins-py'
+destination_directory = 'data/model'
+
+# Copy the contents from source to destination
+copy_directory_contents(source_directory, destination_directory)
+
+```
+
+```{python}
 from vetiver import VetiverAPI
 app = VetiverAPI(v, check_prototype=True)
 ```
 
 ```{python}
-#vetiver.prepare_docker(model_board, "penguin_model")
+vetiver.prepare_docker(model_board, "penguin_model")
 ```
 
 ```{python}
-#from vetiver.server import predict, vetiver_endpoint
-#endpoint = vetiver_endpoint("http://127.0.0.1:8080/predict")
-#endpoint
+from vetiver.server import predict, vetiver_endpoint
+endpoint = vetiver_endpoint("http://127.0.0.1:8080/predict")
+endpoint
 ```
 
 ```{python}
