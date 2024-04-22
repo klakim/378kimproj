@@ -7,7 +7,7 @@ format: html
 
 ## Penguin Size and Mass by Sex and Species
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 #Needed Packages
 install.packages("palmerpenguins")
 install.packages("dplyr")
@@ -29,7 +29,7 @@ con <- DBI::dbConnect(duckdb::duckdb(), dbdir = "my-db.duckdb")
 DBI::dbWriteTable(con, "penguins", palmerpenguins::penguins, overwrite = TRUE)
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 #Load packages 
 library(palmerpenguins)
 library(dplyr)
@@ -57,7 +57,7 @@ con <- DBI::dbConnect(
 df <- dplyr::tbl(con, "penguins")
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 #From Chapter 1
 df %>%
   group_by(species, sex) %>%
@@ -71,7 +71,7 @@ df %>%
   knitr::kable()
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 #Given EDA
 df %>%
   ggplot(aes(x = bill_length_mm, y = body_mass_g, color = species)) +
@@ -81,7 +81,7 @@ df %>%
 
 ## Penguin Bill Length by Sex and Species
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 # Boxplot for comparison 
 df%>%
   #formula 
@@ -93,7 +93,7 @@ df%>%
 
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 # Boxplot for comparison 
 df%>%
   #formula 
@@ -106,7 +106,7 @@ df%>%
 
 ## Penguin Bill Length by Interaction of Sex and Species
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 df %>%
   ggplot(aes(x = interaction(species, sex), y = bill_length_mm, fill = species)) + 
   geom_boxplot() + 
@@ -124,7 +124,7 @@ df %>%
 Random Forest for Classification by Species
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 head(penguins)
 ```
 
@@ -152,19 +152,19 @@ augment(class_tree_fit, new_data = penguins) %>%
 #From this, the overall accuracy is 96.5% which is pretty good. Let's try to see if there is any change when using a valdiation split. 
 ---
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 set.seed(1234)
 Penguin_split <- initial_split(penguins)
 
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 #Train and test
 Penguin_train <- training(Penguin_split)
 Penguin_test <- testing(Penguin_split)
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 #Fit on just the training data set
 class_tree_fit <- class_tree_spec %>%    
   fit(species ~ ., data = Penguin_train)   
@@ -172,42 +172,42 @@ class_tree_fit <- class_tree_spec %>%
 class_tree_fit
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 augment(class_tree_fit, new_data = Penguin_train) %>%
   conf_mat(truth = species, estimate = .pred_class)
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 augment(class_tree_fit, new_data = Penguin_train) %>%
   accuracy(truth = species, estimate = .pred_class)
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 augment(class_tree_fit, new_data = Penguin_test) %>%
   conf_mat(truth = species, estimate = .pred_class)
 
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 augment(class_tree_fit, new_data = Penguin_test) %>%
   accuracy(truth = species, estimate = .pred_class)
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 #The testing data doesn't perform as well and we get a lower accuracy by around 4%. Let's try to use the cost_complexity option to see if there is a better tree size that will reduce the overfitting that is happening. 
 class_tree_wf <- workflow() %>%
   add_model(class_tree_spec %>% set_args(cost_complexity = tune())) %>%
   add_formula(species ~ .)
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 #With this, we need to use k-fold cross validation and a grid of values 
 set.seed(1234)
 Penguin_vfold <- vfold_cv(Penguin_train, v = 10, strata = species)
 param_grid <- grid_regular(cost_complexity(range = c(-3, -1)), levels = 10)
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 #Fitting the model
 #| cache: true 
 tune_res <- tune_grid(
@@ -218,14 +218,14 @@ tune_res <- tune_grid(
 )
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 #Which cost-complexity results in the highest accuracy 
 #| warning: false 
 autoplot(tune_res)
 best_complexity <- select_best(tune_res)
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 #Update the cost_complexity and on the full training set 
 #| warning: false 
 class_tree_final <- finalize_workflow(class_tree_wf, best_complexity)
@@ -233,26 +233,26 @@ class_tree_final_fit <- fit(class_tree_final, data = Penguin_train)
 class_tree_final_fit
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 #Final pruned tree 
 class_tree_final_fit %>%      
   extract_fit_engine() %>%      
   rpart.plot()
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 #Best Accuracy 
 augment(class_tree_fit, new_data = Penguin_train) %>%
   accuracy(truth = species, estimate = .pred_class)
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 #The output of this is the pruned tree
 class_tree_final_fit %>%      
   extract_fit_engine() %>%      
   rpart.plot()
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 DBI::dbDisconnect(con, shutdown = TRUE)
 ```

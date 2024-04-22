@@ -13,7 +13,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 ```
 
-## Model: 
+## Model:
 
 ```{python}
 df = penguins.load_penguins().dropna()
@@ -72,14 +72,14 @@ v = VetiverModel(model=model, model_name='penguin_model', prototype_data=X)
 ```
 
 ```{python}
-from pins import board_folder
-from vetiver import vetiver_pin_write
+#from pins import board_folder
+#from vetiver import vetiver_pin_write
 
 # Initialize board folder
-model_board = board_folder("finalproj/pins-py", allow_pickle_read=True)
+#model_board = board_folder("finalproj/pins-py", allow_pickle_read=True)
 
 # Write the Vetiver model to the board
-vetiver_pin_write(model_board, v)
+#vetiver_pin_write(model_board, v)
 
 
 ```
@@ -139,14 +139,14 @@ copy_directory_contents(source_directory, destination_directory)
 
 ```{python}
 
- # import pandas as pd
+#import pandas as pd
 
 # Your existing dictionary
 #new_penguin_dict = {
-    #"bill_length_mm": [120],  # Enclosed the values in lists
-    #"sex_male": [1],          # Assuming '1' for male based on your previous messages
-   # "species_Gentoo": [1],
-    #"species_Chinstrap": [0]
+#    "bill_length_mm": [120],  # Enclosed the values in lists
+#    "sex_male": [1],          # Assuming '1' for male based on your previous messages
+#    "species_Gentoo": [1],
+#    "species_Chinstrap": [0]
 #}
 
 # Convert the dictionary to a DataFrame
@@ -163,16 +163,16 @@ copy_directory_contents(source_directory, destination_directory)
 
 # Check the response
 #if response.ok:
-#    print("Success:", response.json())
+    print("Success:", response.json())
 #else:
-#    print("Error:", response.status_code, response.text)
+    print("Error:", response.status_code, response.text)
     
 ```
 
 ```{python}
 #if(FALSE) {
- # import duckdb
-#from palmerpenguins import penguins
+#  import duckdb
+#  from palmerpenguins import penguins
 
 #con = duckdb.connect('my-db.duckdb')
 #df = con.execute("SELECT * FROM penguins").fetchdf().dropna()

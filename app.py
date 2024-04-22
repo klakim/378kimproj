@@ -1,5 +1,8 @@
 from shiny import App, render, ui, reactive
 import requests
+import certifi
+
+response = requests.get('https://api.shinyapps.io', verify=certifi.where())
 
 api_url = 'http://127.0.0.1:8080/predict'
 

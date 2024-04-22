@@ -33,5 +33,12 @@
     "title": "eda.qmd",
     "section": "Penguin Bill Length by Interaction of Sex and Species",
     "text": "Penguin Bill Length by Interaction of Sex and Species\n\n\ndf %&gt;%\n  ggplot(aes(x = interaction(species, sex), y = bill_length_mm, fill = species)) + \n  geom_boxplot() + \n  theme_minimal() +\n  labs(\n    title = \"Comparison of Bill Length by Sex and Species\",\n    x = \"Species and Sex\",\n    y = \"Bill Length (mm)\",\n    fill = \"Species\"\n  )\n\nWarning: Removed 2 rows containing non-finite outside the scale range\n(`stat_boxplot()`).\n\n\n\n\n\n\n\nDBI::dbDisconnect(con, shutdown = TRUE)"
+  },
+  {
+    "objectID": "About.html",
+    "href": "About.html",
+    "title": "",
+    "section": "",
+    "text": "#Welcome to Palmer Penguins"
   }
 ]

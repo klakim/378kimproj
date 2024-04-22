@@ -1,6 +1,7 @@
 library(shiny) #App interface WORKS 3/7
 library(httr2) # Need
 library(jsonlite)  #List to JSON
+install.packages('rsconnect')#DownloadPackages 
 
 
 # Define the API URL

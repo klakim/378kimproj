@@ -3,9 +3,11 @@ project:
 
 website:
   navbar:
-    background: primary
+    background: pink
     left:
-      - href: eda.qmd
-        text: EDA
+      - href: about.qmd
+        text: About
       - href: model.qmd
         text: Model
+      - href: eda.qmd
+        text: EDA

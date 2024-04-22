@@ -1,0 +1,16 @@
+---
+title: "About"
+format: html
+editor: visual
+---renv::status()
+---
+
+C2C Kayla Kim Final Project – Palmer Penguin Data Analysis
+
+![](images/clipboard-2049446366.png)
+
+Throughout this project, I was given the Palmer Penguins dataset and conducted some exploratory analysis. I learned tools to become a better data scientist and learned how to integrate myself with the IT/Admin team. Furthermore, I explored the environments of code, data project architecture, databases and data APIs, logging and monitoring, deployments and code promotion, and employing docker.
+
+This dataset contains 3 different penguin species of Adelie, Gentoo, and Chinstrap. It also includes the island, bill_length, bill depth, flipper length, and body mass. I explored the impacts on mass throughout the Exploratory Data Analysis and the Model files.
+
+![](images/clipboard-2972612756.png)
