@@ -2,6 +2,7 @@ project:
   type: website
 
 website:
+  title: "C2C Kim Final Project - Penguin Exploration"
   navbar:
     background: pink
     left:
