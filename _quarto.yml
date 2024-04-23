@@ -5,7 +5,7 @@ website:
   navbar:
     background: pink
     left:
-      - href: about.qmd
+      - href: About.qmd
         text: About
       - href: model.qmd
         text: Model
