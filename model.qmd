@@ -163,9 +163,9 @@ copy_directory_contents(source_directory, destination_directory)
 
 # Check the response
 #if response.ok:
-    print("Success:", response.json())
+   # print("Success:", response.json())
 #else:
-    print("Error:", response.status_code, response.text)
+   # print("Error:", response.status_code, response.text)
     
 ```
 
