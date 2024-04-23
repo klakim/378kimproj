@@ -1,10 +1,3 @@
----
-title: "About"
-format: html
-editor: visual
----renv::status()
----
-
 C2C Kayla Kim Final Project – Palmer Penguin Data Analysis
 
 ![](images/clipboard-2049446366.png)

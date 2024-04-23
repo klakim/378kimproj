@@ -11,3 +11,7 @@ website:
         text: Model
       - href: eda.qmd
         text: EDA
+
+format:
+  html:
+    css: styles.css
